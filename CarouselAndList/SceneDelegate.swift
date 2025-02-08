@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case .swiftUI:
             UIHostingController(rootView: MainView())
         case .UIKit:
-            UIViewController()
+            MainViewController()
         }
     }
 

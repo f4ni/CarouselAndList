@@ -35,6 +35,7 @@ struct MainView: View {
         }
         .sheet(isPresented: $showSheet, content: {
             sheetView
+                .presentationDetents([.height(300), .medium])
         })
         .alert(viewModel.errorMessage, isPresented: $viewModel.showAlert) {}
         .task {
@@ -116,11 +117,18 @@ struct MainView: View {
     }
     
     var sheetView: some View {
-        VStack(alignment: .leading) {
-            Text(viewModel.listOfMoviesNames())
-            Text(viewModel.countOfMovies())
-            Text(viewModel.getTopOccurringForList())
+        VStack(alignment: .leading, spacing: 12) {
+            Group {
+                Text(viewModel.listOfMoviesNames())
+                Text(viewModel.countOfMovies())
+                Text(viewModel.getTopOccurringForList())
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            .padding()
+            .background(.listbackground)
+            .cornerRadius(8)
         }
+        .padding()
     }
 }
 

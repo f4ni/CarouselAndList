@@ -108,7 +108,7 @@ final class ViewModel: ObservableObject {
     }
     
     func getTopOccurringForList() -> String {
-        topThreeOccurringCharactersInString(filteredMovies.compactMap(\.name).joined(separator: ""))
+        topThreeOccurringCharactersInString(filteredMovies.compactMap(\.name).joined(separator: "").replacingOccurrences(of: " ", with: ""))
     }
     
     private func topThreeOccurringCharactersInString(_ input: String?) -> String {

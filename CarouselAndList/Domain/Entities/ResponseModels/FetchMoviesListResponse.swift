@@ -8,6 +8,6 @@
 
 // MARK: - FetchMoviesListResponse
 struct FetchMoviesListResponse: Codable {
-    let bannerList: [Movie]?
-    let combinedList: [Movie]?
+    var bannerList: [Movie]?
+    var combinedList: [Movie]?
 }

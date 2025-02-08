@@ -12,11 +12,22 @@ import Foundation
 struct Movie: Codable {
     var id = UUID()
     let imageURLString: String?
-    let type, name, explanation: String?
-
+    let name, explanation: String?
+    var type: String?
+    
     enum CodingKeys: String, CodingKey {
         case imageURLString = "imageUrl"
         case type, name, explanation
+    }
+    
+    mutating func setType(_ type: String) {
+        self.type = type
+    }
+    
+    func setID() -> Self {
+        var movie = self
+        movie.id = UUID()
+        return movie
     }
 }
 

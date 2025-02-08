@@ -21,7 +21,6 @@ final class ViewModel: ObservableObject {
     var types: [String] {
         Array(Set(movieList?.combinedList?.compactMap({$0.type}) ?? [])).sorted()
     }
-    var cancellables = Set<AnyCancellable>()
     @Published var errorMessage: String = "" {
         didSet {
             showAlert = !errorMessage.isEmpty
@@ -41,7 +40,6 @@ final class ViewModel: ObservableObject {
             guard let self else { return }
             do {
                 async let movieList = try await self.repository.fetchMovies()
-                try await print(movieList)
                 if await ((try movieList.bannerList?.isEmpty) != nil) {
                     self.movieList = try await movieList
                     try await setTypes(for: movieList.bannerList, with: movieList.combinedList?.compactMap{$0.type})
@@ -108,7 +106,7 @@ final class ViewModel: ObservableObject {
     }
     
     func getTopOccurringForList() -> String {
-        topThreeOccurringCharactersInString(filteredMovies.compactMap(\.name).joined(separator: ""))
+        topThreeOccurringCharactersInString(filteredMovies.compactMap(\.name).joined(separator: "").replacingOccurrences(of: " ", with: ""))
     }
     
     private func topThreeOccurringCharactersInString(_ input: String?) -> String {
@@ -123,5 +121,16 @@ final class ViewModel: ObservableObject {
         let sortedCharactersByFrequency = frequencyMap.sorted { $0.value > $1.value }
         
         return sortedCharactersByFrequency.prefix(3).map{ "\($0.key) = \($0.value)" }.joined(separator: "\n")
+    }
+    
+    func bannerItem(_ index: Int) {
+        guard (movieList?.bannerList?.count ?? 0) >= index
+        else { return }
+        
+        guard let selectedItem = movieList?.bannerList?[index],
+              selectedItem != selection
+        else { return }
+        
+        selection = selectedItem
     }
 }
